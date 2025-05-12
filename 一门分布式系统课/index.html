@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head><script src="/ybbh/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=ybbh/livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="http://localhost:1313/ybbh/images/favicon.png" />
+<title>一门分布式系统课 | 欢迎来到我的空间</title>
+<meta name="title" content="一门分布式系统课" />
+<meta name="description" content="一门分布式系统课" />
+<meta name="keywords" content="" />
+
+
+<meta property="og:url" content="http://localhost:1313/ybbh/%E4%B8%80%E9%97%A8%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E8%AF%BE/">
+  <meta property="og:site_name" content="欢迎来到我的空间">
+  <meta property="og:title" content="一门分布式系统课">
+  <meta property="og:description" content="一门分布式系统课">
+  <meta property="og:locale" content="cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2025-05-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-05-10T00:00:00+00:00">
+    <meta property="og:image" content="http://localhost:1313/ybbh/images/share.png">
+
+
+
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/ybbh/images/share.png">
+  <meta name="twitter:title" content="一门分布式系统课">
+  <meta name="twitter:description" content="一门分布式系统课">
+
+
+
+
+  <meta itemprop="name" content="一门分布式系统课">
+  <meta itemprop="description" content="一门分布式系统课">
+  <meta itemprop="datePublished" content="2025-05-10T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-05-10T00:00:00+00:00">
+  <meta itemprop="wordCount" content="465">
+  <meta itemprop="image" content="http://localhost:1313/ybbh/images/share.png">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  :root {
+      --width: 720px;
+      --font-main: Verdana, sans-serif;
+      --font-secondary: Verdana, sans-serif;
+      --font-scale: 1em;
+      --background-color: #fff;
+      --heading-color: #222;
+      --text-color: #444;
+      --link-color: #3273dc;
+      --visited-color:  #8b6fcb;
+      --code-background-color: #f2f2f2;
+      --code-color: #222;
+      --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+      :root {
+          --background-color: #01242e;
+          --heading-color: #eee;
+          --text-color: #ddd;
+          --link-color: #8cc2dd;
+          --visited-color:  #8b6fcb;
+          --code-background-color: #000;
+          --code-color: #ddd;
+          --blockquote-color: #ccc;
+      }
+  }
+
+  body {
+      font-family: var(--font-secondary);
+      font-size: var(--font-scale);
+      margin: auto;
+      padding: 20px;
+      max-width: var(--width);
+      text-align: left;
+      background-color: var(--background-color);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text-color);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-main);
+      color: var(--heading-color);
+  }
+
+  a {
+      color: var(--link-color);
+      cursor: pointer;
+      text-decoration: none;
+  }
+
+  a:hover {
+      text-decoration: underline;
+  }
+
+  nav a {
+      margin-right: 8px;
+  }
+
+  strong, b {
+      color: var(--heading-color);
+  }
+
+  button {
+      margin: 0;
+      cursor: pointer;
+  }
+
+  time {
+   	font-family: monospace;
+    	font-style: normal;
+    	font-size: 15px;
+  }
+
+  main {
+      line-height: 1.6;
+  }
+
+  table {
+      width: 100%;
+  }
+
+  hr {
+      border: 0;
+      border-top: 1px dashed;
+  }
+
+  img {
+      max-width: 100%;
+  }
+
+  code {
+      font-family: monospace;
+      padding: 2px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+  }
+
+  blockquote {
+      border-left: 1px solid #999;
+      color: var(--code-color);
+      padding-left: 20px;
+      font-style: italic;
+  }
+
+  footer {
+      padding: 25px 0;
+      text-align: center;
+  }
+
+  .title:hover {
+      text-decoration: none;
+  }
+
+  .title h1 {
+      font-size: 1.5em;
+  }
+
+  .inline {
+      width: auto !important;
+  }
+
+  .highlight, .code {
+      padding: 1px 15px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+      list-style-type: none;
+      padding: unset;
+  }
+
+  ul.blog-posts li {
+      display: flex;
+  }
+
+  ul.blog-posts li span {
+      flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+      color: var(--visited-color);
+  }
+</style>
+
+</head>
+
+<body>
+  <header><a href="/ybbh/" class="title">
+  <h2>欢迎来到我的空间</h2>
+</a>
+<nav><a href="/ybbh/">主页</a>
+
+<a href="/ybbh/resume/">简历</a>
+
+
+<a href="/ybbh/blog">博客</a>
+
+</nav>
+</header>
+  <main>
+
+<h1>一门分布式系统课</h1>
+<p>
+  <i>
+    <time datetime='2025-05-10'>
+      2025-05-10
+    </time>
+  </i>
+</p>
+
+<content>
+  <h1 id="简介">简介</h1>
+<p>这里的内容主要来我给某大学上的分布式系统课程大纲。
+出于课时和难度的考虑，没有讲太多的概念和内容，只选择了一些基本概念来介绍。
+其中，中心的是共识协议，围绕着共识协议的工作模型，介绍分布式系统的概念，围绕着测试共识协议，介绍系统质量保障技术。
+以尽量少的内容，让学生对分布式系统有直观的了解和接触，结合理论与实践，为以后的深入学习打下基础。</p>
+<p>具体分成三个部分。
+第一部分介绍分布式系统概念和模型，然后介绍go语言，学习用go语言实现系统；
+第二部分着重介绍共识协议，这一部分主要是同学们自己读论文，照着论文实现共识，最后构建一个基于共识的高可用键值存储；
+第三部分介绍一些前沿的系统质量保障手段，要求学生把这些技术应用起来，测试和验证自己实现的系统。</p>
+<h1 id="分布式系统概念和模型">分布式系统概念和模型</h1>
+<h2 id="1-分布式系统简介">1. 分布式系统简介</h2>
+<h3 id="内容">内容：</h3>
+<ol>
+<li>分布式系统概念</li>
+<li>为什么需要它</li>
+<li>它的问题、挑战</li>
+</ol>
+<h3 id="阅读">阅读</h3>
+<h4 id="书">书</h4>
+<ul>
+<li>Distributed Systems, Concepts and Design(Chapter1)</li>
+<li>Distributed Systems An Algorithmic Approach(Chapter1)</li>
+</ul>
+<h2 id="2-系统模型">2. 系统模型</h2>
+<h3 id="内容-1">内容：</h3>
+<ol>
+<li>基于消息：
+同步
+异步</li>
+<li>基于共享
+同步
+异步</li>
+<li>抽象系统模型：
+状态机 + 图</li>
+<li>物理系统模型：
+线程，进程，事件，网络通信，客户端/服务器，消息/RPC</li>
+<li>go编程</li>
+</ol>
+<ul>
+<li><a href="https://go.dev/tour/welcome/1">A tour of the Go programming language</a></li>
+<li><a href="https://dl.acm.org/doi/pdf/10.1145/3488716">The Go Programming Language and Environment</a></li>
+<li><a href="https://www.youtube.com/watch?v=IdCbMO0Ey9I">Patterns and Hints for Concurrency in Go</a></li>
+</ul>
+<h3 id="阅读-1">阅读</h3>
+<h4 id="报告">报告</h4>
+<ul>
+<li>Event VS Thread: <a href="https://web.stanford.edu/~ouster/cgi-bin/papers/threads.pdf">Why Threads Are A Bad Idea(for most purposes)</a></li>
+</ul>
+<p>理解基于事件的处理，并发=/=多线程（进程）</p>
+<h4 id="论文">论文</h4>
+<ul>
+<li>Message Passing VS RPC: <a href="https://scholar.harvard.edu/files/waldo/files/waldo-94.pdf">A Note on Distributed Computing</a></li>
+</ul>
+<p>关注二者优缺点，设计系统时做出你的选择</p>
+<ul>
+<li>I/O automata model: <a href="https://groups.csail.mit.edu/tds/papers/Lynch/CWI89.pdf">An Introduction to Input/Output Automata</a></li>
+</ul>
+<p>I/O automata概念，了解如何用它描述算法、系统</p>
+<h4 id="书-1">书</h4>
+<ul>
+<li>Notes on Theory of Distributed Systems(Chapter2, Chapter16, APPENDIX J)</li>
+<li>Distributed Systems, Concepts and Design(Chapter2-7)</li>
+<li>Distributed Systems An Algorithmic Approach (Chapter2~5)</li>
+<li>Distributed Algorithms(Chapter2, Chapter8)</li>
+<li>Unix Network Programming</li>
+</ul>
+<h2 id="3-实践-1">3. 实践 1</h2>
+<h3 id="内容-2">内容：</h3>
+<h4 id="构建基于消息rpc的分布式系统">构建基于消息(RPC)的分布式系统</h4>
+<ul>
+<li>使用go，或你熟悉的其它语言</li>
+<li>用go的理由，它足够简单，非常适合写分布式系统
+n个节点（N1, N2, N3，… ，Nn) 复制系统</li>
+<li>N1节点不断地从标准输入接收数据，N1持久化接收到的输入数据</li>
+<li>N1节点不断地发送它的持久化数据到其它节点（ N2，N3 ， … ， Nn）</li>
+<li>N2，N3 ， … ， Nn节点在收到数据后，如果没有这项数据，将其持久化到本地</li>
+<li>持久化的数据不能丢失</li>
+<li>最终，所有节点的数据将都和N1一致</li>
+</ul>
+<h4 id="模型">模型</h4>
+<ul>
+<li>任意两个节点间的消息可能丢失，乱序，重复，延迟（异步模型）</li>
+<li>任意节点可能崩溃后重启（崩溃、恢复模型）</li>
+</ul>
+<h1 id="高可用系统">高可用系统</h1>
+<h2 id="4-复制和共识">4. 复制和共识</h2>
+<h3 id="内容-3">内容：</h3>
+<ol>
+<li>复制状态机</li>
+<li>容错</li>
+<li>共识</li>
+<li>CAP theorem （CP VS AP）</li>
+</ol>
+<h3 id="阅读-2">阅读：</h3>
+<h4 id="论文-1">论文</h4>
+<ul>
+<li><a href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf">Time, Clocks, and the Ordering of Events in a Distributed System</a></li>
+</ul>
+<p>理解状态机（重要），关于时间和时钟的部分如果看不懂可略过</p>
+<ul>
+<li>HLC  <a href="https://cse.buffalo.edu/tech-reports/2014-04.pdf">Logical Physical Clocks and Consistent Snapshots in Globally Distributed Databases</a></li>
+</ul>
+<p>扩展阅读</p>
+<ul>
+<li><a href="https://www.cs.cornell.edu/fbs/publications/SMSurvey.pdf">Implementing Fault-Tolerant Services Using the State Machine Approach: A Tutorial</a></li>
+</ul>
+<p>复制状态机</p>
+<ul>
+<li><a href="https://users.ece.cmu.edu/~adrian/731-sp04/readings/FB-cap.pdf">Harvest, Yield, and Scalable Tolerant Systems</a></li>
+</ul>
+<p>理解CAP，“二选一”是什么</p>
+<h4 id="书-2">书</h4>
+<ul>
+<li>Distributed Systems, Concepts and Design(Chapter18)</li>
+<li>Distributed Systems An Algorithmic Approach (Chapter12~13)</li>
+</ul>
+<h2 id="5-共识算法-raft">5. 共识算法 Raft</h2>
+<h3 id="阅读-3">阅读：</h3>
+<h4 id="论文-2">论文</h4>
+<ul>
+<li>
+<p><a href="https://raft.github.io/raft.pdf">In Search of an Understandable Consensus Algorithm</a>
+理解Raft，复制+选举</p>
+</li>
+<li>
+<p>Raft Thesis， 可选， <a href="https://raw.githubusercontent.com/ongardie/dissertation/refs/heads/master/book.pdf">Consensus: Bridging Theory and Practice</a>
+更多的Raft细节</p>
+</li>
+<li>
+<p><a href="https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-857.pdf">Analysis of Raft Consensus</a>
+理解Raft正确性</p>
+</li>
+</ul>
+<h4 id="raft资料">Raft资料</h4>
+<ul>
+<li><a href="https://raft.github.io/">https://raft.github.io/</a></li>
+</ul>
+<h3 id="案例">案例：</h3>
+<h4 id="etcd">ETCD</h4>
+<p><a href="https://github.com/etcd-io/raft">ETCD Raft</a></p>
+<h2 id="6实践2">6.实践2</h2>
+<h3 id="内容-4">内容</h3>
+<ol>
+<li>
+<p>构建一个高可用key value存储，可以基于实践1部分codebase</p>
+</li>
+<li>
+<p>n个节点（N1, N2, N3，… ，Nn， n固定) 复制系统，每个节点都是一个key value存储
+客户端通过连接到节点读写数据；
+当半数节点（n/2）停止服务时，系统仍能提供服务（fairness），并且保持数据的一致；
+选用一种共识算法实现，实现复制和选主，不需要节点管理（不需要考虑增减节点），不需要实现linearizability（不需要考虑读旧值和写入重复命令的问题）</p>
+</li>
+<li>
+<p>注意：
+客户端需要容忍失败；
+key value需要持久化；
+允许参考开源程序，但要表明对应哪一部分是自己的工作，以及为什么你觉得可以用它而不担心它的问题，用一些办法测试和验证它的正确（测试和验证部分，实践 2 cont，使用开源对这一部分的要求会相应地增高）</p>
+</li>
+</ol>
+<h3 id="目标">目标</h3>
+<p>熟悉高可用系统和共识协议开发</p>
+<h2 id="7-共识算法-paxos">7. 共识算法 Paxos</h2>
+<h3 id="阅读-">阅读 ：</h3>
+<h4 id="论文-3">论文</h4>
+<ul>
+<li><a href="https://lamport.azurewebsites.net/pubs/paxos-simple.pdf">Paxos Made Simple</a></li>
+</ul>
+<p>单Value Paxos</p>
+<ul>
+<li><a href="https://www.cs.cornell.edu/home/rvr/Paxos/paxos.pdf">Paxos Made Moderately Complex</a></li>
+</ul>
+<p>要点:  多Value Paxos</p>
+<ul>
+<li><a href="https://paper-notes.zhjwpku.com/assets/pdfs/paxos_vs_raft.pdf">Paxos vs Raft: Have we reached consensus on distributed consensus? </a></li>
+</ul>
+<p>理解Paxos和Raft差异</p>
+<ul>
+<li><a href="https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-935.pdf">Distributed consensus revised</a></li>
+</ul>
+<h4 id="书-3">书</h4>
+<ul>
+<li>Notes on Theory of Distributed Systems(Chapter12, Chapter13, Chapter14)</li>
+</ul>
+<h4 id="案例-1">案例：</h4>
+<ul>
+<li>Tencent PaxosStore</li>
+</ul>
+<h1 id="系统质量保障">系统质量保障</h1>
+<h2 id="8-系统测试和验证方法">8. 系统测试和验证方法</h2>
+<h3 id="内容-5">内容</h3>
+<ol>
+<li>确定性模拟</li>
+<li>随机化方法</li>
+<li>形式化方法</li>
+</ol>
+<h3 id="阅读-4">阅读：</h3>
+<h4 id="论文-4">论文</h4>
+<ul>
+<li>
+<p><a href="https://www.usenix.org/system/files/conference/osdi14/osdi14-paper-yuan.pdf">Simple Testing Can Prevent Most Critical Failures: An Analysis of Production Failures in Distributed Data-Intensive Systems</a>
+Testing, 测试的重要关注点</p>
+</li>
+<li>
+<p><a href="https://dl.acm.org/doi/pdf/10.1145/2723372.2723711">Lineage-driven Fault Injection</a>
+错误注入</p>
+</li>
+<li>
+<p><a href="https://sigmodrecord.org/publications/sigmodRecord/2203/pdfs/08_fdb-zhou.pdf">FoundationDB: A Distributed Key Value Store</a>
+Deterministic Simulation, 着重理解模拟，确定性</p>
+</li>
+<li>
+<p><a href="https://dl.acm.org/doi/pdf/10.1145/3158134">Why is random testing effective for partition tolerance bugs?</a></p>
+</li>
+</ul>
+<p>了解随机化方法</p>
+<ul>
+<li>Verdi: A Framework for Implementing and Formally Verifying Distributed Systems</li>
+<li>How formal methods helped AWS to design amazing services</li>
+<li>eXtreme Modelling in Practice</li>
+<li>Model Checking Guided Testing for Distributed Systems</li>
+</ul>
+<p>了解形式化方法，模型检验</p>
+<h4 id="其它资料">其它资料：</h4>
+<ul>
+<li>Specifying Systems（Chapter1~8）</li>
+<li>Testing a Single-Node, Single Threaded, Distributed System Written in 1985 By Will Wilson
+Colin Scott, Fuzzing Raft for Fun and Publication</li>
+<li>jepsen &ldquo;Simulation Testing&rdquo; by Michael Nygard</li>
+<li>Golang Fuzz <a href="https://go.dev/doc/security/fuzz/">https://go.dev/doc/security/fuzz/</a></li>
+<li>Leslie Lamport&rsquo;s The TLA+ Video Course</li>
+<li>Raft TLA+ Specification</li>
+</ul>
+<h2 id="9-实践-2cont">9. 实践 2（cont）</h2>
+<h3 id="内容-6">内容</h3>
+<p>为高可用key value store找deep bug</p>
+<ol>
+<li>说明发现了什么deep bugs，画出它们的事件状态转换图</li>
+<li>说明是用什么方法发现它们的（参考第8部分）</li>
+</ol>
+<h3 id="目标-1">目标</h3>
+<p>掌握一定的测试/验证系统/协议正确技术
+deep bug？</p>
+<p>要经历多个特定的连续异步事件（消息重复/丢失/乱序，崩溃/重启）才能发生的bug</p>
+<h3 id="参考书">参考书</h3>
+<ul>
+<li>Distributed Algorithms</li>
+</ul>
+
+</content>
+<p>
+  
+</p>
+
+  </main>
+  <footer>
+</footer>
+
+    
+</body>
+
+</html>

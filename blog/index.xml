@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>博客 on 欢迎来到我的空间</title>
+    <link>http://localhost:1313/ybbh/blog/</link>
+    <description>Recent content in 博客 on 欢迎来到我的空间</description>
+    <generator>Hugo</generator>
+    <language>cn</language>
+    <copyright>Copyright © 2025, Guo Hua.</copyright>
+    <lastBuildDate>Sat, 10 May 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/ybbh/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>一门分布式系统课</title>
+      <link>http://localhost:1313/ybbh/%E4%B8%80%E9%97%A8%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E8%AF%BE/</link>
+      <pubDate>Sat, 10 May 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/ybbh/%E4%B8%80%E9%97%A8%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E8%AF%BE/</guid>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;p&gt;这里的内容主要来我给某大学上的分布式系统课程大纲。&#xA;出于课时和难度的考虑，没有讲太多的概念和内容，只选择了一些基本概念来介绍。&#xA;其中，中心的是共识协议，围绕着共识协议的工作模型，介绍分布式系统的概念，围绕着测试共识协议，介绍系统质量保障技术。&#xA;以尽量少的内容，让学生对分布式系统有直观的了解和接触，结合理论与实践，为以后的深入学习打下基础。&lt;/p&gt;&#xA;&lt;p&gt;具体分成三个部分。&#xA;第一部分介绍分布式系统概念和模型，然后介绍go语言，学习用go语言实现系统；&#xA;第二部分着重介绍共识协议，这一部分主要是同学们自己读论文，照着论文实现共识，最后构建一个基于共识的高可用键值存储；&#xA;第三部分介绍一些前沿的系统质量保障手段，要求学生把这些技术应用起来，测试和验证自己实现的系统。&lt;/p&gt;&#xA;&lt;h1 id=&#34;分布式系统概念和模型&#34;&gt;分布式系统概念和模型&lt;/h1&gt;&#xA;&lt;h2 id=&#34;1-分布式系统简介&#34;&gt;1. 分布式系统简介&lt;/h2&gt;&#xA;&lt;h3 id=&#34;内容&#34;&gt;内容：&lt;/h3&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;分布式系统概念&lt;/li&gt;&#xA;&lt;li&gt;为什么需要它&lt;/li&gt;&#xA;&lt;li&gt;它的问题、挑战&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;h3 id=&#34;阅读&#34;&gt;阅读&lt;/h3&gt;&#xA;&lt;h4 id=&#34;书&#34;&gt;书&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Distributed Systems, Concepts and Design(Chapter1)&lt;/li&gt;&#xA;&lt;li&gt;Distributed Systems An Algorithmic Approach(Chapter1)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;2-系统模型&#34;&gt;2. 系统模型&lt;/h2&gt;&#xA;&lt;h3 id=&#34;内容-1&#34;&gt;内容：&lt;/h3&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;基于消息：&#xA;同步&#xA;异步&lt;/li&gt;&#xA;&lt;li&gt;基于共享&#xA;同步&#xA;异步&lt;/li&gt;&#xA;&lt;li&gt;抽象系统模型：&#xA;状态机 + 图&lt;/li&gt;&#xA;&lt;li&gt;物理系统模型：&#xA;线程，进程，事件，网络通信，客户端/服务器，消息/RPC&lt;/li&gt;&#xA;&lt;li&gt;go编程&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://go.dev/tour/welcome/1&#34;&gt;A tour of the Go programming language&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://dl.acm.org/doi/pdf/10.1145/3488716&#34;&gt;The Go Programming Language and Environment&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=IdCbMO0Ey9I&#34;&gt;Patterns and Hints for Concurrency in Go&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;阅读-1&#34;&gt;阅读&lt;/h3&gt;&#xA;&lt;h4 id=&#34;报告&#34;&gt;报告&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Event VS Thread: &lt;a href=&#34;https://web.stanford.edu/~ouster/cgi-bin/papers/threads.pdf&#34;&gt;Why Threads Are A Bad Idea(for most purposes)&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;理解基于事件的处理，并发=/=多线程（进程）&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
