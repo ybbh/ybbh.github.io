@@ -1,2 +1,2 @@
 User-Agent: *
-Sitemap: http://localhost:1313/ybbh/sitemap.xml
+Sitemap: https://ybbh.github.io/sitemap.xml
