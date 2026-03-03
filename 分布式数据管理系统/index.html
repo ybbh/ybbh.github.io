@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="https://ybbh.github.io/images/favicon.png" />
+<title>分布式数据管理系统 | 欢迎来到我的空间</title>
+<meta name="title" content="分布式数据管理系统" />
+<meta name="description" content="PART I 分布式系统概念和模型
+1. 分布式系统简介
+1.分布式系统简介
+内容：
+
+分布式系统概念
+为什么需要它
+它的问题、挑战:
+
+阅读
+
+书
+
+Distributed Systems, Concepts and Design(Chapter1)
+Distributed Systems An Algorithmic Approach(Chapter1)
+2. 系统模型（抽象）
+内容：
+
+基于消息
+同步
+异步
+基于共享
+
+同步
+异步
+
+失败
+抽象系统模型：
+状态机 &#43; 图
+
+阅读
+
+论文
+
+I/O automata model: An Introduction to Input/Output Automata
+要点：I/O automata概念，了解如何用它描述算法、系统
+
+书
+
+Notes on Theory of Distributed Systems(Chapter2, Chapter16, APPENDIX J)
+Distributed Systems, Concepts and Design(Chapter2-7)
+Distributed Systems An Algorithmic Approach (Chapter2~5)
+Distributed Algorithms(Chapter2, Chapter8)" />
+<meta name="keywords" content="" />
+
+
+<meta property="og:url" content="https://ybbh.github.io/%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/">
+  <meta property="og:site_name" content="欢迎来到我的空间">
+  <meta property="og:title" content="分布式数据管理系统">
+  <meta property="og:description" content="PART I 分布式系统概念和模型 1. 分布式系统简介 1.分布式系统简介
+内容： 分布式系统概念 为什么需要它 它的问题、挑战: 阅读 书 Distributed Systems, Concepts and Design(Chapter1)
+Distributed Systems An Algorithmic Approach(Chapter1)
+2. 系统模型（抽象） 内容： 基于消息
+同步
+异步 基于共享 同步
+异步
+失败 抽象系统模型：
+状态机 &#43; 图 阅读 论文 I/O automata model: An Introduction to Input/Output Automata
+要点：I/O automata概念，了解如何用它描述算法、系统
+书 Notes on Theory of Distributed Systems(Chapter2, Chapter16, APPENDIX J)
+Distributed Systems, Concepts and Design(Chapter2-7)
+Distributed Systems An Algorithmic Approach (Chapter2~5)
+Distributed Algorithms(Chapter2, Chapter8)">
+  <meta property="og:locale" content="cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2026-03-03T13:29:39+08:00">
+    <meta property="article:modified_time" content="2026-03-03T13:29:39+08:00">
+    <meta property="og:image" content="https://ybbh.github.io/images/share.png">
+
+
+
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://ybbh.github.io/images/share.png">
+  <meta name="twitter:title" content="分布式数据管理系统">
+  <meta name="twitter:description" content="PART I 分布式系统概念和模型 1. 分布式系统简介 1.分布式系统简介
+内容： 分布式系统概念 为什么需要它 它的问题、挑战: 阅读 书 Distributed Systems, Concepts and Design(Chapter1)
+Distributed Systems An Algorithmic Approach(Chapter1)
+2. 系统模型（抽象） 内容： 基于消息
+同步
+异步 基于共享 同步
+异步
+失败 抽象系统模型：
+状态机 &#43; 图 阅读 论文 I/O automata model: An Introduction to Input/Output Automata
+要点：I/O automata概念，了解如何用它描述算法、系统
+书 Notes on Theory of Distributed Systems(Chapter2, Chapter16, APPENDIX J)
+Distributed Systems, Concepts and Design(Chapter2-7)
+Distributed Systems An Algorithmic Approach (Chapter2~5)
+Distributed Algorithms(Chapter2, Chapter8)">
+
+
+
+
+  <meta itemprop="name" content="分布式数据管理系统">
+  <meta itemprop="description" content="PART I 分布式系统概念和模型 1. 分布式系统简介 1.分布式系统简介
+内容： 分布式系统概念 为什么需要它 它的问题、挑战: 阅读 书 Distributed Systems, Concepts and Design(Chapter1)
+Distributed Systems An Algorithmic Approach(Chapter1)
+2. 系统模型（抽象） 内容： 基于消息
+同步
+异步 基于共享 同步
+异步
+失败 抽象系统模型：
+状态机 &#43; 图 阅读 论文 I/O automata model: An Introduction to Input/Output Automata
+要点：I/O automata概念，了解如何用它描述算法、系统
+书 Notes on Theory of Distributed Systems(Chapter2, Chapter16, APPENDIX J)
+Distributed Systems, Concepts and Design(Chapter2-7)
+Distributed Systems An Algorithmic Approach (Chapter2~5)
+Distributed Algorithms(Chapter2, Chapter8)">
+  <meta itemprop="datePublished" content="2026-03-03T13:29:39+08:00">
+  <meta itemprop="dateModified" content="2026-03-03T13:29:39+08:00">
+  <meta itemprop="wordCount" content="414">
+  <meta itemprop="image" content="https://ybbh.github.io/images/share.png">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  :root {
+      --width: 720px;
+      --font-main: Verdana, sans-serif;
+      --font-secondary: Verdana, sans-serif;
+      --font-scale: 1em;
+      --background-color: #fff;
+      --heading-color: #222;
+      --text-color: #444;
+      --link-color: #3273dc;
+      --visited-color:  #8b6fcb;
+      --code-background-color: #f2f2f2;
+      --code-color: #222;
+      --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+      :root {
+          --background-color: #01242e;
+          --heading-color: #eee;
+          --text-color: #ddd;
+          --link-color: #8cc2dd;
+          --visited-color:  #8b6fcb;
+          --code-background-color: #000;
+          --code-color: #ddd;
+          --blockquote-color: #ccc;
+      }
+  }
+
+  body {
+      font-family: var(--font-secondary);
+      font-size: var(--font-scale);
+      margin: auto;
+      padding: 20px;
+      max-width: var(--width);
+      text-align: left;
+      background-color: var(--background-color);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text-color);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-main);
+      color: var(--heading-color);
+  }
+
+  a {
+      color: var(--link-color);
+      cursor: pointer;
+      text-decoration: none;
+  }
+
+  a:hover {
+      text-decoration: underline;
+  }
+
+  nav a {
+      margin-right: 8px;
+  }
+
+  strong, b {
+      color: var(--heading-color);
+  }
+
+  button {
+      margin: 0;
+      cursor: pointer;
+  }
+
+  time {
+   	font-family: monospace;
+    	font-style: normal;
+    	font-size: 15px;
+  }
+
+  main {
+      line-height: 1.6;
+  }
+
+  table {
+      width: 100%;
+  }
+
+  hr {
+      border: 0;
+      border-top: 1px dashed;
+  }
+
+  img {
+      max-width: 100%;
+  }
+
+  code {
+      font-family: monospace;
+      padding: 2px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+  }
+
+  blockquote {
+      border-left: 1px solid #999;
+      color: var(--code-color);
+      padding-left: 20px;
+      font-style: italic;
+  }
+
+  footer {
+      padding: 25px 0;
+      text-align: center;
+  }
+
+  .title:hover {
+      text-decoration: none;
+  }
+
+  .title h1 {
+      font-size: 1.5em;
+  }
+
+  .inline {
+      width: auto !important;
+  }
+
+  .highlight, .code {
+      padding: 1px 15px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+      list-style-type: none;
+      padding: unset;
+  }
+
+  ul.blog-posts li {
+      display: flex;
+  }
+
+  ul.blog-posts li span {
+      flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+      color: var(--visited-color);
+  }
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>欢迎来到我的空间</h2>
+</a>
+<nav><a href="/">主页</a>
+
+<a href="/resume/">简历</a>
+
+
+<a href="/blog">博客</a>
+
+</nav>
+</header>
+  <main>
+
+<h1>分布式数据管理系统</h1>
+<p>
+  <i>
+    <time datetime='2026-03-03'>
+      2026-03-03
+    </time>
+  </i>
+</p>
+
+<content>
+  <h1 id="part-i-分布式系统概念和模型">PART I 分布式系统概念和模型</h1>
+<h2 id="1-分布式系统简介">1. 分布式系统简介</h2>
+<p><a href="assets/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%AE%80%E4%BB%8B.pdf">1.分布式系统简介</a></p>
+<h3 id="内容">内容：</h3>
+<ol>
+<li>分布式系统概念</li>
+<li>为什么需要它</li>
+<li>它的问题、挑战:</li>
+</ol>
+<h3 id="阅读">阅读</h3>
+<ul>
+<li>书</li>
+</ul>
+<p>Distributed Systems, Concepts and Design(Chapter1)</p>
+<p>Distributed Systems An Algorithmic Approach(Chapter1)</p>
+<h2 id="2-系统模型抽象">2. 系统模型（抽象）</h2>
+<h3 id="内容-1">内容：</h3>
+<ol>
+<li>基于消息<br>
+同步<br>
+异步</li>
+<li>基于共享</li>
+</ol>
+<p>同步<br>
+异步</p>
+<ol start="3">
+<li>失败</li>
+<li>抽象系统模型：<br>
+状态机 + 图</li>
+</ol>
+<h3 id="阅读-1">阅读</h3>
+<ul>
+<li>论文</li>
+</ul>
+<p>I/O automata model: <a href="https://groups.csail.mit.edu/tds/papers/Lynch/CWI89.pdf">An Introduction to Input/Output Automata</a></p>
+<p>要点：I/O automata概念，了解如何用它描述算法、系统</p>
+<ul>
+<li>书</li>
+</ul>
+<p>Notes on Theory of Distributed Systems(Chapter2, Chapter16, APPENDIX J)</p>
+<p>Distributed Systems, Concepts and Design(Chapter2-7)</p>
+<p>Distributed Systems An Algorithmic Approach (Chapter2~5)</p>
+<p>Distributed Algorithms(Chapter2, Chapter8)</p>
+<p>Specifying Systems（Chapter1~8）</p>
+<ul>
+<li>视频</li>
+</ul>
+<p><a href="https://www.youtube.com/playlist?list=PLWAv2Etpa7AOAwkreYImYt0gIpOdWQevD">Leslie Lamport&rsquo;s The TLA+ Video Course</a></p>
+<h2 id="3-系统模型实现">3. 系统模型（实现）</h2>
+<ol>
+<li>
+<p>物理系统模型：<br>
+线程，进程，事件，网络通信，客户端/服务器，消息/RPC</p>
+</li>
+<li>
+<p>go编程</p>
+<pre><code>[A tour of the Go programming language](https://go.dev/tour/welcome/1)
+
+[The Go Programming Language and Environment](https://dl.acm.org/doi/pdf/10.1145/3488716)
+</code></pre>
+</li>
+</ol>
+<p><a href="https://pdos.csail.mit.edu/6.824/notes/gopattern.pdf">Patterns and Hints for Concurrency in Go</a>， <a href="https://www.youtube.com/watch?v=IdCbMO0Ey9I">视频</a></p>
+<h3 id="阅读-2">阅读</h3>
+<ul>
+<li>报告</li>
+</ul>
+<p>Event VS Thread: <a href="https://web.stanford.edu/~ouster/cgi-bin/papers/threads.pdf">Why Threads Are A Bad Idea(for most purposes)</a></p>
+<p>要点：理解基于事件的处理，并发=/=多线程（进程）</p>
+<ul>
+<li>论文</li>
+</ul>
+<p>Message Passing VS RPC: <a href="https://scholar.harvard.edu/files/waldo/files/waldo-94.pdf">A Note on Distributed Computing</a></p>
+<p>要点：关注二者优缺点，设计系统时做出你的选择</p>
+<ul>
+<li>书</li>
+</ul>
+<p>Unix Network Programming</p>
+<h1 id="part-ii-分布式系统技术">PART II 分布式系统技术</h1>
+<h2 id="4-分区和复制">4. 分区和复制</h2>
+<h3 id="内容-2">内容：</h3>
+<ol>
+<li>分区和复制解决的问题</li>
+<li>分区策略，键范围分区，哈希分区</li>
+</ol>
+<h3 id="阅读-3">阅读：</h3>
+<ul>
+<li>论文</li>
+</ul>
+<p><a href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf">Time, Clocks, and the Ordering of Events in a Distributed System</a></p>
+<p>要点：理解状态机</p>
+<p>扩展：HLC  <a href="https://cse.buffalo.edu/tech-reports/2014-04.pdf">Logical Physical Clocks and Consistent Snapshots in Globally Distributed Databases</a></p>
+<p><a href="https://www.cs.cornell.edu/fbs/publications/SMSurvey.pdf">Implementing Fault-Tolerant Services Using the State Machine Approach: A Tutorial</a></p>
+<p>要点：复制状态机</p>
+<p><a href="https://users.ece.cmu.edu/~adrian/731-sp04/readings/FB-cap.pdf">Harvest, Yield, and Scalable Tolerant Systems</a></p>
+<p>要点：理解CAP</p>
+<ul>
+<li>书</li>
+</ul>
+<p>Distributed Systems, Concepts and Design(Chapter18)</p>
+<p>Distributed Systems An Algorithmic Approach (Chapter12~13)</p>
+<h2 id="5-共识算法">5. 共识算法</h2>
+<h3 id="内容-3">内容：</h3>
+<ol>
+<li>共识解决问题</li>
+<li>Paxos / Raft</li>
+</ol>
+<h2 id="raft">Raft</h2>
+<h3 id="阅读-4">阅读：</h3>
+<ul>
+<li>论文</li>
+</ul>
+<p><a href="https://lamport.azurewebsites.net/pubs/paxos-simple.pdf">Paxos Made Simple</a></p>
+<p>要点：单Value Paxos</p>
+<p><a href="https://www.cs.cornell.edu/home/rvr/Paxos/paxos.pdf">Paxos Made Moderately Complex</a></p>
+<p>要点:  多Value Paxos</p>
+<p><a href="https://paper-notes.zhjwpku.com/assets/pdfs/paxos_vs_raft.pdf">Paxos vs Raft: Have we reached consensus on distributed consensus?</a></p>
+<p>要点：理解Paxos和Raft差异</p>
+<p><a href="https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-935.pdf">Distributed consensus revised</a></p>
+<p><a href="https://raft.github.io/raft.pdf">In Search of an Understandable Consensus Algorithm</a></p>
+<p>要点：理争Raft，复制+选举</p>
+<p><a href="https://raw.githubusercontent.com/ongardie/dissertation/refs/heads/master/book.pdf">Consensus: Bridging Theory and Practice</a> （thesis 可选）</p>
+<p>要点：更多的Raft细节</p>
+<p><a href="https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-857.pdf">Analysis of Raft Consensus</a></p>
+<p>要点：理解Raft正确性</p>
+<p><a href="https://raft.github.io/">https://raft.github.io/</a></p>
+<h3 id="案例">案例：</h3>
+<p><a href="https://github.com/etcd-io/raft">Etcd Raft</a></p>
+<p><a href="https://github.com/Tencent/paxosstore">Tencent PaxosStore</a></p>
+<h2 id="6-分布式事务处理">6. 分布式事务处理</h2>
+<h3 id="内容-4">内容</h3>
+<ol>
+<li>并发控制</li>
+<li>恢复</li>
+<li>分布式提交</li>
+</ol>
+<h1 id="part-iii-系统质量保障">PART III 系统质量保障</h1>
+<h2 id="7系统软件质量保障传统方法">7.系统软件质量保障(传统方法）</h2>
+<h3 id="内容-5">内容</h3>
+<ol>
+<li>基于规则</li>
+<li>基于示例</li>
+<li>随机化方法</li>
+</ol>
+<h3 id="阅读-5">阅读：</h3>
+<ul>
+<li>论文</li>
+</ul>
+<p>Testing:<br>
+<a href="https://www.usenix.org/system/files/conference/osdi14/osdi14-paper-yuan.pdf">Simple Testing Can Prevent Most Critical Failures: An Analysis of Production Failures in Distributed Data-Intensive Systems</a></p>
+<p>要点：测试的重要关注点</p>
+<p>Random:</p>
+<p><a href="https://dl.acm.org/doi/pdf/10.1145/3158134">Why is random testing effective for partition tolerance bugs?</a></p>
+<p>要点：了解随机化方法</p>
+<p>错误注入：</p>
+<p><a href="https://dl.acm.org/doi/pdf/10.1145/2723372.2723711">Lineage-driven Fault Injection</a></p>
+<h2 id="8系统软件质量保障现代方法">8.系统软件质量保障（现代方法）</h2>
+<h3 id="内容-6">内容</h3>
+<ol>
+<li>确定性模拟</li>
+<li>形式化方法</li>
+</ol>
+<p>Deterministic Simulation:<br>
+<a href="https://sigmodrecord.org/publications/sigmodRecord/2203/pdfs/08_fdb-zhou.pdf">FoundationDB: A Distributed Key Value Store</a></p>
+<p>要点：着重理解模拟，确定性</p>
+<p>Formal method：</p>
+<p><a href="https://homes.cs.washington.edu/~mernst/pubs/verify-distsystem-pldi2015.pdf">Verdi: A Framework for Implementing and Formally Verifying Distributed Systems</a></p>
+<p><a href="https://dl.acm.org/doi/pdf/10.1145/2699417">How formal methods helped AWS to design amazing services</a></p>
+<p><a href="https://dl.acm.org/doi/pdf/10.14778/3397230.3397233">eXtreme Modelling in Practice</a></p>
+<p><a href="http://www.tcse.cn/~wsdou/papers/2023-eurosys-mocket.pdf">Model Checking Guided Testing for Distributed Systems</a></p>
+<p>要点：了解形式化方法，模型检验</p>
+<ul>
+<li>其它资料：</li>
+</ul>
+<p><a href="https://www.youtube.com/watch?v=m3HwXlQPCEU">Testing a Single-Node, Single Threaded, Distributed System Written in 1985 By Will Wilson </a></p>
+<p><a href="https://colin-scott.github.io/blog/2015/10/07/fuzzing-raft-for-fun-and-profit/">Colin Scott, Fuzzing Raft for Fun and Publication</a></p>
+<p><a href="https://jepsen.io/">jepsen</a></p>
+<p><a href="https://www.youtube.com/watch?v=N5HyVUPuU0E">&ldquo;Simulation Testing&rdquo; by Michael Nygard</a></p>
+<p>Golang Fuzz <a href="https://go.dev/doc/security/fuzz/">https://go.dev/doc/security/fuzz/</a></p>
+<h1 id="参考书">参考书</h1>
+<p>[Distributed Algorithms An Intuitive Approach]</p>
+<p>[Distributed Systems Concepts and Design.pdf]</p>
+<p>[Distributed Systems, An Algorithmic Approach]</p>
+<p>[Specifying Systems]</p>
+<p>[Distributed Algorithms]</p>
+<p>[Notes on Theory of Distributed Systems.pdf]</p>
+
+</content>
+<p>
+  
+</p>
+
+  </main>
+  <footer>
+</footer>
+
+    
+</body>
+
+</html>
