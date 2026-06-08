@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="https://ybbh.github.io/images/favicon.png" />
+<title>数据库不应只是操作系统上的一个进程 | 欢迎来到我的空间</title>
+<meta name="title" content="数据库不应只是操作系统上的一个进程" />
+<meta name="description" content="本文讨论数据库与操作系统之间长期存在的边界问题，并从调度、I/O、持久化语义、kernel bypass、DBOS 与 unikernel 等角度，重新审视数据库运行时的系统位置。" />
+<meta name="keywords" content="数据库,操作系统,MuduDB,分布式系统,云原生数据库," />
+
+
+<meta property="og:url" content="https://ybbh.github.io/post/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E5%BA%94%E5%8F%AA%E6%98%AF%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B8%8A%E7%9A%84%E4%B8%80%E4%B8%AA%E8%BF%9B%E7%A8%8B/">
+  <meta property="og:site_name" content="欢迎来到我的空间">
+  <meta property="og:title" content="数据库不应只是操作系统上的一个进程">
+  <meta property="og:description" content="本文讨论数据库与操作系统之间长期存在的边界问题，并从调度、I/O、持久化语义、kernel bypass、DBOS 与 unikernel 等角度，重新审视数据库运行时的系统位置。">
+  <meta property="og:locale" content="cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2026-05-18T14:51:04+08:00">
+    <meta property="article:modified_time" content="2026-05-18T14:51:04+08:00">
+    <meta property="article:tag" content="数据库">
+    <meta property="article:tag" content="操作系统">
+    <meta property="article:tag" content="MuduDB">
+    <meta property="article:tag" content="分布式系统">
+    <meta property="article:tag" content="云原生数据库">
+    <meta property="og:image" content="https://ybbh.github.io/images/share.png">
+
+
+
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://ybbh.github.io/images/share.png">
+  <meta name="twitter:title" content="数据库不应只是操作系统上的一个进程">
+  <meta name="twitter:description" content="本文讨论数据库与操作系统之间长期存在的边界问题，并从调度、I/O、持久化语义、kernel bypass、DBOS 与 unikernel 等角度，重新审视数据库运行时的系统位置。">
+
+
+
+
+  <meta itemprop="name" content="数据库不应只是操作系统上的一个进程">
+  <meta itemprop="description" content="本文讨论数据库与操作系统之间长期存在的边界问题，并从调度、I/O、持久化语义、kernel bypass、DBOS 与 unikernel 等角度，重新审视数据库运行时的系统位置。">
+  <meta itemprop="datePublished" content="2026-05-18T14:51:04+08:00">
+  <meta itemprop="dateModified" content="2026-05-18T14:51:04+08:00">
+  <meta itemprop="wordCount" content="422">
+  <meta itemprop="image" content="https://ybbh.github.io/images/share.png">
+  <meta itemprop="keywords" content="数据库,操作系统,MuduDB,分布式系统,云原生数据库">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  :root {
+      --width: 720px;
+      --font-main: Verdana, sans-serif;
+      --font-secondary: Verdana, sans-serif;
+      --font-scale: 1em;
+      --background-color: #fff;
+      --heading-color: #222;
+      --text-color: #444;
+      --link-color: #3273dc;
+      --visited-color:  #8b6fcb;
+      --code-background-color: #f2f2f2;
+      --code-color: #222;
+      --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+      :root {
+          --background-color: #01242e;
+          --heading-color: #eee;
+          --text-color: #ddd;
+          --link-color: #8cc2dd;
+          --visited-color:  #8b6fcb;
+          --code-background-color: #000;
+          --code-color: #ddd;
+          --blockquote-color: #ccc;
+      }
+  }
+
+  body {
+      font-family: var(--font-secondary);
+      font-size: var(--font-scale);
+      margin: auto;
+      padding: 20px;
+      max-width: var(--width);
+      text-align: left;
+      background-color: var(--background-color);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text-color);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-main);
+      color: var(--heading-color);
+  }
+
+  a {
+      color: var(--link-color);
+      cursor: pointer;
+      text-decoration: none;
+  }
+
+  a:hover {
+      text-decoration: underline;
+  }
+
+  nav a {
+      margin-right: 8px;
+  }
+
+  strong, b {
+      color: var(--heading-color);
+  }
+
+  button {
+      margin: 0;
+      cursor: pointer;
+  }
+
+  time {
+   	font-family: monospace;
+    	font-style: normal;
+    	font-size: 15px;
+  }
+
+  main {
+      line-height: 1.6;
+  }
+
+  table {
+      width: 100%;
+  }
+
+  hr {
+      border: 0;
+      border-top: 1px dashed;
+  }
+
+  img {
+      max-width: 100%;
+  }
+
+  code {
+      font-family: monospace;
+      padding: 2px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+  }
+
+  blockquote {
+      border-left: 1px solid #999;
+      color: var(--code-color);
+      padding-left: 20px;
+      font-style: italic;
+  }
+
+  footer {
+      padding: 25px 0;
+      text-align: center;
+  }
+
+  .title:hover {
+      text-decoration: none;
+  }
+
+  .title h1 {
+      font-size: 1.5em;
+  }
+
+  .inline {
+      width: auto !important;
+  }
+
+  .highlight, .code {
+      padding: 1px 15px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+      list-style-type: none;
+      padding: unset;
+  }
+
+  ul.blog-posts li {
+      display: flex;
+  }
+
+  ul.blog-posts li span {
+      flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+      color: var(--visited-color);
+  }
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>欢迎来到我的空间</h2>
+</a>
+<nav><a href="/">主页</a>
+
+<a href="/resume/">简历</a>
+
+
+<a href="/blog">文章</a>
+
+</nav>
+</header>
+  <main>
+
+<content>
+  <h1 id="数据库不应只是操作系统上的一个进程">数据库不应只是操作系统上的一个进程</h1>
+<h2 id="是时候重新审视数据库与操作系统的边界了">是时候重新审视数据库与操作系统的边界了</h2>
+<p>长期以来，“数据库运行在操作系统之上”几乎是一个不需要解释的默认设定。操作系统负责进程、线程、文件系统、网络、内存和设备管理；数据库负责查询、事务、索引、缓存、并发控制和恢复。这个分工清晰、稳定，也支撑了过去几十年的数据库工程实践。</p>
+<p>但这个默认设定正在变得越来越值得讨论。</p>
+<p>问题并不在于 Linux 不好，也不在于 PostgreSQL、MySQL、RocksDB 这类系统不够优秀。真正的问题是：通用操作系统和现代数据库系统的优化目标正在出现分叉。</p>
+<p>操作系统强调通用性、隔离性、兼容性、可维护性和公平调度；数据库则越来越关注低尾延迟、可预测执行、事务一致性、直接 I/O 路径，以及对硬件行为的精细控制。二者都在进步，但它们的目标函数并不完全一致。</p>
+<p>如果数据库只是一个普通应用，运行在操作系统之上当然合理。但现代数据库早已不是普通应用。它自己管理缓存，自己管理并发，自己设计日志和恢复，自己实现调度和资源控制，在很多关键路径上甚至还要绕过操作系统提供的默认机制。</p>
+<p>到了这个阶段，我们至少应该重新问一句：</p>
+<blockquote>
+<p>继续把数据库作为一个普通用户态程序运行在通用操作系统之上，仍然是最合适的系统结构吗？</p>
+</blockquote>
+<h2 id="1-数据库从来没有完全信任操作系统抽象">1. 数据库从来没有完全信任操作系统抽象</h2>
+<p>从工程实现看，数据库和操作系统之间一直有一种微妙关系：数据库使用操作系统，但并不完全依赖操作系统。</p>
+<p>数据库通常不会简单地把内存管理交给操作系统 page cache，而是自己实现 buffer pool。数据库不会只依赖操作系统的文件写入语义，而是自己实现 WAL、checkpoint、group commit 和崩溃恢复。数据库也不会把并发控制交给操作系统锁，而是自己实现 latch、lock manager、MVCC 和事务调度。</p>
+<p>这不是数据库工程师喜欢重复造轮子，而是因为操作系统提供的是通用抽象，而数据库需要的是更强的语义约束和更可预测的执行行为。</p>
+<p>操作系统看到的是线程、文件、页、socket 和 block device。数据库看到的是事务、日志、脏页、索引、锁等待、查询计划和恢复点。二者面对的是同一台机器，但理解系统状态的方式并不一样。</p>
+<p>这种差异过去也存在，只是没有现在这么尖锐。硬件慢、并发低、系统规模小的时候，多一层抽象、多几次上下文切换、多一点调度不确定性，未必会成为决定性问题。但在多核、NVMe、RDMA、云存储和低延迟在线服务成为常态之后，这些抽象差异会被迅速放大，最终变成性能问题、稳定性问题，甚至可靠性问题。</p>
+<h2 id="2-linux-调度变化影响-postgresql问题不只是一次性能回退">2. Linux 调度变化影响 PostgreSQL：问题不只是一次性能回退</h2>
+<p>Phoronix 报道过一个很典型的案例：AWS 工程师在 Linux 7.0 开发周期中发现，PostgreSQL 在 Graviton4 机器上的性能出现明显下降，吞吐量大约只有此前内核版本的一半。相关分析认为，问题与 Linux 抢占模型变化有关，PostgreSQL 在用户态 spinlock 上花费了更多时间。</p>
+<p>参考链接：</p>
+<ul>
+<li><a href="https://www.phoronix.com/news/Linux-7.0-AWS-PostgreSQL-Drop">https://www.phoronix.com/news/Linux-7.0-AWS-PostgreSQL-Drop</a></li>
+</ul>
+<p>这个案例值得关注，并不只是因为“性能下降了一半”这个数字醒目，而是因为它暴露了数据库和操作系统之间一种长期存在的隐含依赖。</p>
+<p>PostgreSQL 的不少关键路径依赖用户态锁和短临界区。理想情况下，锁持有者会很快完成工作并释放锁，其他线程只需要短暂等待。但如果操作系统在不合适的时机抢占了锁持有者，等待者就可能在用户态空转。单次等待看起来很小，放到高并发事务系统中，就可能被放大成吞吐下降和尾延迟恶化。</p>
+<p>从操作系统角度看，调整抢占模型可能有充分理由。内核要面对的是各种不同类型的负载，它需要维护通用性、公平性和长期可维护性。</p>
+<p>但从数据库角度看，这种变化可能破坏多年调优出来的并发行为。数据库以为自己控制了锁和调度，实际上仍然依赖内核调度器的具体行为。内核并不理解这些用户态锁背后的事务语义，也不会承诺永远维持一种对数据库友好的时序。</p>
+<p>所以这个案例真正值得讨论的地方在于：</p>
+<blockquote>
+<p>数据库的性能关键路径建立在操作系统调度语义之上，而这些语义并不是为数据库事务处理专门设计的。</p>
+</blockquote>
+<p>这不只是某个内核版本的偶然问题。只要数据库仍然作为普通进程运行在通用操作系统上，它就必须持续适配外部调度策略的变化。</p>
+<h2 id="3-fsync-事件说明文件接口和事务持久化之间存在语义裂缝">3. fsync 事件说明：文件接口和事务持久化之间存在语义裂缝</h2>
+<p>性能问题已经足够麻烦，可靠性问题更复杂。PostgreSQL 的 fsync failure 事件就是一个典型例子。</p>
+<p>PostgreSQL 社区曾长期讨论 <code>fsync()</code> 失败后的语义问题。核心问题是：当 <code>fsync()</code> 返回错误时，数据库是否还能准确知道哪些数据已经落盘、哪些数据没有落盘、哪些错误可以恢复、哪些错误必须立即停止系统？</p>
+<p>PostgreSQL Wiki 将相关讨论整理为 “fsyncgate 2018”。后来 PostgreSQL 在 fsync 失败时采取了更激进的 PANIC 策略，Linux 也在 writeback error handling 和 fsync 错误报告方面做过改进。</p>
+<p>参考链接：</p>
+<ul>
+<li><a href="https://wiki.postgresql.org/wiki/Fsync_Errors">https://wiki.postgresql.org/wiki/Fsync_Errors</a></li>
+<li><a href="https://medium.com/@baotiao/starting-from-postgresqls-fsync-failure-840af156585c">https://medium.com/@baotiao/starting-from-postgresqls-fsync-failure-840af156585c</a></li>
+</ul>
+<p>这个问题的关键不在于某个系统调用有没有 bug，而在于 <code>fsync()</code> 这种文件接口本来就不是围绕数据库事务语义设计的。</p>
+<p>数据库真正关心的是：某个事务提交之后，对应的 WAL 是否已经可靠持久化？checkpoint 之前的脏页是否已经安全写入？如果写入失败，失败范围是什么？恢复协议应该从哪里开始？系统是否还能继续接受新事务？</p>
+<p>操作系统提供的则是另一套抽象：文件、页缓存、writeback、块设备、设备缓存和错误码。数据库把事务语义压在这些文件接口之上，中间隔着多层缓冲、重排和错误传播路径。大多数时候它能正常工作，但一旦进入异常路径，语义边界就会变得非常复杂。</p>
+<p>这说明数据库和操作系统之间并不是简单的“调用接口”关系。数据库需要的是事务级持久化语义，操作系统提供的是文件级 I/O 语义。二者之间靠约定、经验、补丁和大量工程细节维持一致。</p>
+<p>对于一个把“数据不能丢”作为基本要求的系统来说，这种边界并不理想。</p>
+<h2 id="4-dbos-的启示数据库不再只是应用层组件">4. DBOS 的启示：数据库不再只是应用层组件</h2>
+<p>DBOS 提供了另一个观察角度。它不是简单讨论数据库性能优化，而是提出一个更激进的问题：既然数据库擅长管理状态、一致性、恢复和查询，为什么操作系统状态不能用数据库方式来管理？</p>
+<p>参考链接：</p>
+<ul>
+<li><a href="https://arxiv.org/abs/2007.11112">https://arxiv.org/abs/2007.11112</a></li>
+<li><a href="https://dbos-project.github.io/">https://dbos-project.github.io/</a></li>
+</ul>
+<p>DBOS 的基本思路，是把操作系统状态表示为数据库表，让原本分散在内核和运行时中的状态变得可查询、可恢复、可调试、可迁移。这个方向背后有一个重要判断：现代系统最困难的部分，越来越集中在状态管理上。而数据库恰恰是工程体系中最成熟的状态管理系统之一。</p>
+<p>当然，DBOS 的方向和“为数据库重新设计运行时”并不完全相同。DBOS 更像是把操作系统数据库化；而本文讨论的问题，是数据库是否应该继续依赖传统通用操作系统的抽象。</p>
+<p>但二者有一个共同点：它们都不再把数据库看作普通应用。数据库开始从应用层组件，变成系统结构中的中心组件之一。</p>
+<p>过去我们问的是：“数据库如何更好地运行在操作系统上？”现在也许可以反过来问：“操作系统能力是否应该围绕数据库这样的状态系统重新组织？”</p>
+<h2 id="5-spdk-和-dpdk高性能路径已经在绕过内核">5. SPDK 和 DPDK：高性能路径已经在绕过内核</h2>
+<p>如果通用操作系统抽象足够适合所有高性能数据系统，SPDK 和 DPDK 就不会这么重要。</p>
+<p>SPDK 的思路很直接：把 NVMe 驱动等关键路径放到用户态，通过轮询、异步、零拷贝和无锁消息传递，减少 syscall、中断和内核路径开销。</p>
+<p>DPDK 也是类似逻辑：通过用户态 Poll Mode Driver 和 kernel bypass，让网络包处理避开传统内核网络栈，从而获得更高吞吐和更低延迟。</p>
+<p>参考链接：</p>
+<ul>
+<li><a href="https://spdk.io/doc/about.html">https://spdk.io/doc/about.html</a></li>
+<li><a href="https://www.dpdk.org/">https://www.dpdk.org/</a></li>
+<li><a href="https://developer.nvidia.com/networking/dpdk">https://developer.nvidia.com/networking/dpdk</a></li>
+</ul>
+<p>这些技术的流行说明，高性能系统已经在用实际工程选择表达态度：对于关键数据路径，通用内核机制经常不是最优选择。中断、syscall、内核调度、通用协议栈和锁竞争带来的开销，在普通应用里可以接受，但在数据库、存储系统、网络系统和交易系统中，会变得非常明显。</p>
+<p>数据库和 SPDK、DPDK 的需求高度相似：低延迟、低抖动、高吞吐、可控调度、可预测资源使用。既然存储和网络领域已经出现大量用户态驱动和 kernel bypass 的实践，那么数据库也应该重新思考自己的运行时边界。</p>
+<p>这并不是说所有数据库都应该绕过内核。更准确地说，问题在于：数据库关键路径是否还应该默认依赖通用内核机制。</p>
+<p>如果数据库最重要的 I/O、调度和持久化路径都需要额外机制来绕开操作系统，那么“数据库只是操作系统上的普通进程”这个抽象本身就已经开始松动了。</p>
+<h2 id="6-unikernel-的启示数据库不一定需要完整的通用-os">6. Unikernel 的启示：数据库不一定需要完整的通用 OS</h2>
+<p>Unikernel 的思路是把应用和它需要的最小操作系统库编译成一个专用镜像。它不是运行在完整通用操作系统之上的普通应用，而是一个为特定应用裁剪出来的系统环境。</p>
+<p>参考链接：</p>
+<ul>
+<li><a href="https://dl.acm.org/doi/10.1145/2490301.2451167">https://dl.acm.org/doi/10.1145/2490301.2451167</a></li>
+<li><a href="https://arxiv.org/abs/1911.06260">https://arxiv.org/abs/1911.06260</a></li>
+</ul>
+<p>这个思路对数据库很有启发。</p>
+<p>数据库通常不需要图形界面，不需要桌面子系统，不需要大量通用设备驱动，不需要完整用户管理模型，也不需要绝大多数通用 syscall。数据库真正需要的是可控 CPU 调度、高性能内存管理、明确持久化语义、高效网络 I/O、崩溃恢复、故障隔离，以及面向数据访问的安全模型。</p>
+<p>也就是说，数据库需要的不是“更多操作系统功能”，而是“更符合数据库语义的少量系统功能”。</p>
+<p>现代通用操作系统非常庞大。庞大带来的不仅是功能丰富，也包括更大的攻击面、更复杂的失败模式和更难预测的交互路径。对于数据库这种状态密集、性能敏感、可靠性要求极高的软件来说，完整 OS 未必总是最自然的运行环境。</p>
+<p>这并不意味着数据库一定要做成 unikernel，也不意味着要放弃 Linux 生态。更实际的方向是：数据库需要一个比普通进程更贴近硬件、比完整 OS 更贴近数据语义的运行层。</p>
+<p>这个运行层可以建立在 Linux 之上，也可以通过 library OS、unikernel、microkernel、虚拟化或用户态驱动实现。具体形态可以不同，关键是重新划定数据库与底层系统之间的边界。</p>
+<h2 id="7-核心问题是语义不匹配">7. 核心问题是语义不匹配</h2>
+<p>讨论到这里，问题已经不是“Linux 是否足够好”。Linux 当然足够好，而且在很多方面几乎不可替代。它的硬件支持、生态、工具链和运维体系，是任何新系统都很难绕开的。</p>
+<p>但 Linux 是通用操作系统，不是数据库执行内核。它必须服务各种负载：桌面应用、容器、编译任务、Web 服务、HPC、嵌入式设备、网络设备、文件服务器和数据库。它的目标是通用性，而不是为数据库事务处理提供最优语义。</p>
+<p>数据库的问题则非常具体：事务如何调度，锁等待如何处理，WAL 何时持久化，脏页如何刷盘，I/O 错误如何传播，查询任务如何和网络事件协同，CPU cache 如何减少抖动，尾延迟如何控制。</p>
+<p>OS 和 DB 的错位，主要体现在三个方面。</p>
+<p>第一，调度语义不匹配。操作系统调度线程，数据库调度事务和查询。OS 看见的是 runnable task，DB 看见的是锁依赖、事务冲突、查询阶段和 I/O 等待。</p>
+<p>第二，I/O 语义不匹配。操作系统处理文件、页缓存和块设备，数据库处理 WAL、checkpoint、dirty page 和恢复点。</p>
+<p>第三，安全语义不匹配。操作系统围绕进程、用户、文件权限和 syscall 做隔离，数据库围绕库、表、行、列、事务、角色、审计和访问路径做隔离。</p>
+<p>这些问题不是多增加几个 syscall 就能彻底解决的。它们说明 OS 和 DB 对系统状态的建模方式不同。数据库不是不需要操作系统，而是不能再只被看作操作系统上的普通应用。</p>
+<h2 id="8-一个可能的方向把数据库运行时提升为系统边界">8. 一个可能的方向：把数据库运行时提升为系统边界</h2>
+<p>传统结构大致是这样的：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">应用服务
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">数据库客户端 / RPC / SQL
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">数据库进程
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">操作系统 syscall / 文件系统 / 网络栈 / 调度器
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">硬件
+</span></span></code></pre></div><p>这个结构默认认为数据库是操作系统上的一个复杂应用。</p>
+<p>未来更值得探索的结构，可能是这样：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">应用逻辑 / 查询 / 事务
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">数据库运行时
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">面向数据库语义的调度、I/O、持久化、安全和恢复机制
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">最小 OS / 专用内核 / 用户态驱动 / 虚拟化层 / 硬件
+</span></span></code></pre></div><p>在这种结构里，数据库不只是调用操作系统机制，而是把一部分关键能力收回到数据库运行时中。这个运行时理解事务、查询、锁等待、日志、恢复和数据访问路径，因此也更有机会做出符合数据库目标的调度和资源控制。</p>
+<p>这条路线可以是渐进式的，不必一步到位。例如：</p>
+<ol>
+<li>在 Linux 之上构建数据库专用 runtime，减少对通用 OS 语义的依赖；</li>
+<li>对关键存储路径使用 SPDK、io_uring 或 direct I/O；</li>
+<li>对关键网络路径使用 DPDK、io_uring 或更轻量的用户态网络机制；</li>
+<li>将查询、事务、I/O 完成事件和应用过程调用纳入统一调度；</li>
+<li>为数据库设计更明确的持久化接口，而不是只依赖传统 <code>fsync()</code> 语义；</li>
+<li>把应用逻辑部署到数据库运行时内部，减少跨进程、跨网络、跨服务调用；</li>
+<li>探索 library OS、unikernel、microkernel 或数据库专用 kernel 的形态。</li>
+</ol>
+<p>这里的重点不是“抛弃 Linux”，而是减少数据库关键路径对通用 OS 语义的依赖。Linux 仍然可以承担启动、隔离、部署、观测和硬件生态等基础角色。但数据库最核心的执行、调度和持久化语义，应该更多地回到数据库运行时自身。</p>
+<h2 id="9-数据库的未来不只是更好地适配-os">9. 数据库的未来，不只是更好地适配 OS</h2>
+<p>过去很多数据库优化都围绕“如何更好地使用操作系统”展开：更好地使用文件系统，更好地使用 page cache，更好地使用线程，更好地使用网络栈。</p>
+<p>这条路线仍然有价值，但它可能不是全部未来。</p>
+<p>当数据库已经自己管理缓存、并发、事务、日志、恢复和调度时，它事实上已经在实现一套面向数据的系统运行时。既然如此，继续把它放在一个并不理解事务语义的通用 OS 抽象之上，就会越来越别扭。</p>
+<p>Linux 调度变化影响 PostgreSQL，说明数据库性能依赖 OS 调度细节。fsync failure 说明文件接口和事务持久化之间存在语义裂缝。SPDK 和 DPDK 说明高性能数据路径正在绕过内核。DBOS 说明数据库思想正在反向影响操作系统设计。Unikernel 则说明专用系统环境有机会缩小复杂性和攻击面。</p>
+<p>这些现象放在一起，指向同一个问题：</p>
+<blockquote>
+<p>数据库和操作系统的传统边界，可能需要重新设计。</p>
+</blockquote>
+<p>未来的数据密集型系统，可能不再只是“数据库运行在操作系统上”这么简单。更合理的方向，是以数据库为中心重新组织执行、调度、持久化、网络、安全和部署能力。</p>
+<p>数据库不一定要取代操作系统，但数据库应该拥有更强的系统边界。对于高并发、低延迟、强一致、状态密集的应用来说，数据库不应再只是一个被操作系统调度的进程，而应该进一步成为数据服务应用的执行平台。</p>
+<h2 id="mududb探索数据库与操作系统的新边界">MuduDB：探索数据库与操作系统的新边界</h2>
+<p><a href="https://github.com/scuptio/mududb">MuduDB</a> 是一个面向数据服务应用的新一代数据管理系统。它的目标不是做一个更快的存储引擎，也不是再做一个传统意义上的 SQL 数据库，而是重新组织应用逻辑、事务处理、状态访问与数据库运行时之间的关系。</p>
+<p>MuduDB 希望让一部分数据密集型应用逻辑直接进入数据库运行时，使计算更靠近数据，让事务、状态访问和业务过程在同一个执行环境中协同完成。</p>
+<p>从这个角度看，MuduDB 更接近一个“统一执行与数据平台”。它不仅提供存储、查询和事务能力，也尝试承载应用过程、运行时调度、状态管理与部署分发等能力。</p>
+<p>MuduDB 未来关注的不只是数据库与应用之间的边界，也包括数据库与操作系统之间的边界。它并不是要接管整个操作系统，而是希望在那些通用操作系统并不真正理解、但对数据库系统至关重要的部分进行探索：事务语义、执行调度、数据访问路径、持久化边界和状态恢复机制。</p>
+<p>这也是本文讨论这个问题的原因。下一代数据库系统的机会，可能不只在查询优化器、存储引擎或分布式协议里，也在数据库运行时和底层系统边界的重新划分中。</p>
+<hr>
+<h2 id="参考资料">参考资料</h2>
+<ol>
+<li>
+<p>Phoronix, <em>Linux 7.0 On AWS Graviton4 Seeing PostgreSQL Performance Drop To Half</em>
+<a href="https://www.phoronix.com/news/Linux-7.0-AWS-PostgreSQL-Drop">https://www.phoronix.com/news/Linux-7.0-AWS-PostgreSQL-Drop</a></p>
+</li>
+<li>
+<p>PostgreSQL Wiki, <em>Fsync Errors</em>
+<a href="https://wiki.postgresql.org/wiki/Fsync_Errors">https://wiki.postgresql.org/wiki/Fsync_Errors</a></p>
+</li>
+<li>
+<p>Zongzhi Chen, <em>Starting from PostgreSQL’s fsync Failure</em>
+<a href="https://medium.com/@baotiao/starting-from-postgresqls-fsync-failure-840af156585c">https://medium.com/@baotiao/starting-from-postgresqls-fsync-failure-840af156585c</a></p>
+</li>
+<li>
+<p>Matei Zaharia et al., <em>DBOS: A Proposal for a Data-Centric Operating System</em>
+<a href="https://arxiv.org/abs/2007.11112">https://arxiv.org/abs/2007.11112</a></p>
+</li>
+<li>
+<p>DBOS Project
+<a href="https://dbos-project.github.io/">https://dbos-project.github.io/</a></p>
+</li>
+<li>
+<p>SPDK, <em>About SPDK</em>
+<a href="https://spdk.io/doc/about.html">https://spdk.io/doc/about.html</a></p>
+</li>
+<li>
+<p>DPDK Project
+<a href="https://www.dpdk.org/">https://www.dpdk.org/</a></p>
+</li>
+<li>
+<p>NVIDIA, <em>DPDK</em>
+<a href="https://developer.nvidia.com/networking/dpdk">https://developer.nvidia.com/networking/dpdk</a></p>
+</li>
+<li>
+<p>Anil Madhavapeddy et al., <em>Unikernels: Library Operating Systems for the Cloud</em>
+<a href="https://dl.acm.org/doi/10.1145/2490301.2451167">https://dl.acm.org/doi/10.1145/2490301.2451167</a></p>
+</li>
+<li>
+<p>Simon Kuenzer et al., <em>A Security Perspective on Unikernels</em>
+<a href="https://arxiv.org/abs/1911.06260">https://arxiv.org/abs/1911.06260</a></p>
+</li>
+</ol>
+
+</content>
+<p>
+  
+  <a href="https://ybbh.github.io/post/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
+  
+  <a href="https://ybbh.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">#操作系统</a>
+  
+  <a href="https://ybbh.github.io/post/mududb/">#MuduDB</a>
+  
+  <a href="https://ybbh.github.io/post/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/">#分布式系统</a>
+  
+  <a href="https://ybbh.github.io/post/%E4%BA%91%E5%8E%9F%E7%94%9F%E6%95%B0%E6%8D%AE%E5%BA%93/">#云原生数据库</a>
+  
+</p>
+
+  </main>
+  <footer>
+</footer>
+
+    
+</body>
+
+</html>

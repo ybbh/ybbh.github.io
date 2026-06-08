@@ -1,0 +1,2 @@
+User-Agent: *
+Sitemap: https://ybbh.github.io/sitemap.xml

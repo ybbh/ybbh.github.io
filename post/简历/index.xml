@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>简历 on 欢迎来到我的空间</title>
+    <link>https://ybbh.github.io/post/%E7%AE%80%E5%8E%86/</link>
+    <description>Recent content in 简历 on 欢迎来到我的空间</description>
+    <generator>Hugo</generator>
+    <language>cn</language>
+    <copyright>Copyright © 2025, Guo Hua.</copyright>
+    <lastBuildDate>Mon, 08 Jun 2026 00:00:00 +0800</lastBuildDate>
+    <atom:link href="https://ybbh.github.io/post/%E7%AE%80%E5%8E%86/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>简历</title>
+      <link>https://ybbh.github.io/resume/</link>
+      <pubDate>Sat, 10 May 2025 17:45:07 +0800</pubDate>
+      <guid>https://ybbh.github.io/resume/</guid>
+      <description>&lt;h1 id=&#34;郭华--hua-guo&#34;&gt;郭华 / Hua Guo&lt;/h1&gt;&#xA;&lt;p&gt;计算机软件与理论博士，现为华东师范大学博士后。主要研究方向包括云原生数据库、分布式系统、形式化方法在系统软件中的应用、云环境零信任安全以及 AI 辅助软件工程。曾参与列存储数据库、大数据分析平台、地图基础数据平台等工程系统研发，当前重点开展新型数据库管理与应用执行一体化系统研究。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;教育经历&#34;&gt;教育经历&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;中国人民大学&lt;/strong&gt;，计算机软件与理论，博士，2019.9 &amp;ndash; 2024.12&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;中国人民大学&lt;/strong&gt;，计算机软件与理论，硕士，2016.9 &amp;ndash; 2019.6&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;海南大学&lt;/strong&gt;，计算机科学与技术，学士，2007.9 &amp;ndash; 2011.6&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;工作经历&#34;&gt;工作经历&lt;/h2&gt;&#xA;&lt;h3 id=&#34;华东师范大学博士后研究人员&#34;&gt;华东师范大学，博士后研究人员&lt;/h3&gt;&#xA;&lt;p&gt;&lt;strong&gt;2024.3 &amp;ndash; 至今&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;围绕云原生数据库、数据密集型应用执行、系统软件验证与 AI 辅助软件工程等方向开展研究工作，重点关注数据库系统架构、分布式事务处理、形式化验证方法与系统工程实践的结合。&lt;/p&gt;&#xA;&lt;h3 id=&#34;开珀卡珀scuptio创始人&#34;&gt;开珀卡珀（scuptio），创始人&lt;/h3&gt;&#xA;&lt;p&gt;&lt;strong&gt;2023.1 &amp;ndash; 至今&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;负责MuduDB数据库系统、系统软件质量保障相关项目的设计与研发，主要项目包括：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/scuptio/mududb&#34;&gt;&lt;strong&gt;MuduDB&lt;/strong&gt;&lt;/a&gt;：面向数据密集型应用的新型数据库系统，目标是让应用逻辑能够直接运行和部署在数据库之上。&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/scuptio/sedeve-kit&#34;&gt;&lt;strong&gt;sedeve-kit&lt;/strong&gt;&lt;/a&gt;：形式化验证与测试工具，面向数据库系统的规范建模、测试生成与行为验证。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;零信任系统&lt;/strong&gt;：面向云环境与分布式系统的零信任安全机制研究与原型开发。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;百度地图&#34;&gt;百度地图&lt;/h3&gt;&#xA;&lt;p&gt;&lt;strong&gt;2014.7 &amp;ndash; 2015.7&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;参与百度地图基础数据平台相关研发工作，主要涉及地图基础数据处理、平台化支撑与数据服务能力建设。&lt;/p&gt;&#xA;&lt;h3 id=&#34;东方国信&#34;&gt;东方国信&lt;/h3&gt;&#xA;&lt;p&gt;&lt;strong&gt;2012.5 &amp;ndash; 2014.7&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;参与列存储数据库系统与大数据分析系统研发，主要关注数据存储、查询处理与分析型系统工程实现。&lt;/p&gt;&#xA;&lt;h3 id=&#34;目标在线&#34;&gt;目标在线&lt;/h3&gt;&#xA;&lt;p&gt;&lt;strong&gt;2011.8 &amp;ndash; 2012.5&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;从事游戏开发相关工作，参与在线游戏系统的功能开发与工程实现。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;研究方向&#34;&gt;研究方向&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;云原生数据库系统&lt;/strong&gt;：数据库系统架构、事务处理、数据密集型应用执行、云环境数据库基础设施。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;分布式系统&lt;/strong&gt;：共识协议、容错机制、分布式事务、系统一致性与可靠性。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;形式化方法与系统软件验证&lt;/strong&gt;：TLA+ 规范建模、规范驱动开发、数据库与分布式系统正确性验证。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;云上零信任安全&lt;/strong&gt;：云环境访问控制、身份认证、最小权限与系统安全边界设计。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;AI 辅助软件工程&lt;/strong&gt;：大模型辅助需求分析、规范生成、代码生成、测试生成与工程流程自动化。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;代表性论文与会议&#34;&gt;代表性论文与会议&lt;/h2&gt;&#xA;&lt;h3 id=&#34;学术论文&#34;&gt;学术论文&lt;/h3&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Hua Guo, Yunhong Ji, Huiqi Hu, Xuan Zhou.&#xA;&lt;strong&gt;A Composable Architecture for Cloud Transactional DBMS.&lt;/strong&gt;&#xA;&lt;em&gt;APWeb/WAIM (3)&lt;/em&gt;, 2024: 428&amp;ndash;443.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
